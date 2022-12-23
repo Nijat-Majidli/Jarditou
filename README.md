@@ -1,0 +1,1 @@
+L'idée générale de ce projet consistait à écrire des scripts front-end et back-end afin de créer différents pages web du site internet de la société Jarditou spécialisée dans le domaine du jardin et paysagisme. 
