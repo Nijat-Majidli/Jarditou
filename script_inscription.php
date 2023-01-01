@@ -27,6 +27,12 @@
             exit;
         }
     }
+    else
+    {
+        echo "<h4> Veuillez remplir tous les champs ! </h4>";
+        header("refresh:2; url=inscription.php");  // refresh:2 signifie que après 5 secondes l'utilisateur sera redirigé sur la page inscription.php. 
+        exit;
+    }
 
         
 
@@ -40,54 +46,51 @@
     }
     else
     {
-        echo "<h4> Le mot de passe n'est pas identique  </h4>";
+        echo "<h4> Les mots de passe ne sont pas identiques. </h4>";
         header("refresh:2; url=inscription.php");
         exit;
     }
 
 
-    // Vérification si adresse mail saisi par utilisateur déjà existe dans la base de données ou non ?
+    // Vérification si l'adresse mail saisi par utilisateur déjà existe dans la base de données ou non ?
     // Pour cela d'abord on va se connecter à la base de données: 
     require "connection_bdd.php";
     
-    // Ensuite on construit la requête SELECT pour aller chercher les colonnes user_email et user_login qui se trouvent dans table "users" :
-    $req = "SELECT user_email, user_login FROM users" ;
-    
-    // Grace à méthode query() on exécute notre requête et on ramene les colonnes user_email et et user_login et on les mets dans l'objet $result :
-    // On peut également écrire notre requête comme ça :  $result = $db->query("SELECT user_email, user_login FROM users")
-    $result = $db->query($req)  or  die(print_r($db->errorInfo()));    // Pour repérer l'erreur SQL en PHP on utilise le code die(print_r($db->errorInfo())) 
+    // Ensuite on construit la requête SELECT pour aller chercher certaines données qui se trouvent dans table "users" :
+    $requete = "SELECT * FROM users WHERE user_email = :user_email";
 
-    // Grace à la méthode "rowCount()" nous pouvons connaitre le nombre de lignes retournées par la requête
-    $nbLigne = $result->rowCount(); 
+    // Puis on fait préparation de la requête SELECT avec la fonction prepare(): 
+    $result = $db->prepare($requete);
+
+    // Association de la valeur au marqueur via méthode "bindValue()"
+    $result->bindValue(':user_email', $user_email, PDO::PARAM_STR);
+
+    // Exécution de la requête
+    $result->execute(); 
+
+    $row = $result->fetch(PDO::FETCH_OBJ);
     
-    if ($nbLigne >= 1)
+    if ($row->user_email == $user_email)
     {
-        while ($row = $result->fetch(PDO::FETCH_OBJ))    // Grace à la méthode fetch() on choisit 1er ligne de la colonne user_mail et user_login et on les mets dans l'objet $row                                            
-        {                                                // Avec la boucle "while" on choisit 2eme, 3eme, etc... lignes de la colonne user_mail et user_login et on les mets dans l'objet $row    
-            if ($row->user_email == $user_email)
-            {
-                echo "<h4> Cette adresse mail déjà existe. Choisissez une autre! </h4>";
-                header("refresh:2; url=inscription.php");
-                exit;
-            } 
-            if ($row->user_login == $user_login)
-            {
-                echo "<h4> Ce login déjà existe. Choisissez une autre! </h4>";
-                header("refresh:2; url=inscription.php");
-                exit;
-            } 
-        }
-    }        
-      
-
-    // Construction de la requête INSERT:
-    // On insere pas la valeurs pour la colonne "login_fail" car dans base de données on a bien défini que cette colonne accepte la valeur 0
-    $requete = $db->prepare("INSERT INTO users (user_nom, user_prenom, user_email, user_login, user_mdp, user_inscription, user_connexion, user_role) 
-    VALUES (:user_nom, :user_prenom, :user_email, :user_login, :user_mdp, :user_inscription, :user_connexion, :user_role)");
+        echo "<h4> Cette adresse mail déjà existe. Choisissez une autre! </h4>";
+        header("refresh:2; url=inscription.php");
+        exit;
+    } 
+    else if ($row->user_login == $user_login)
+    {
+        echo "<h4> Ce login déjà existe. Choisissez une autre! </h4>";
+        header("refresh:2; url=inscription.php");
+        exit;
+    } 
 
 
     if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email))  // Vérification la validité de format de l'adresse mail avec REGEX en utilisant la fonction preg_match() qui renvoie True or False:
     {
+        // Construction de la requête INSERT:
+        // On insere pas la valeurs pour la colonne "login_fail" car dans base de données on a bien défini que cette colonne accepte la valeur 0
+        $requete = $db->prepare("INSERT INTO users (user_nom, user_prenom, user_email, user_login, user_mdp, user_inscription, user_connexion, user_role) 
+        VALUES (:user_nom, :user_prenom, :user_email, :user_login, :user_mdp, :user_inscription, :user_connexion, :user_role)");
+
         // Association des valeurs aux marqueurs via méthode "bindValue()"
         $requete->bindValue(':user_nom', $user_nom, PDO::PARAM_STR);
         $requete->bindValue(':user_prenom', $user_prenom, PDO::PARAM_STR);
@@ -111,7 +114,6 @@
             $requete->bindValue(':user_role', 'client', PDO::PARAM_STR);
         }
         
-
         // Exécution de la requête
         $requete->execute();
         
@@ -119,10 +121,9 @@
         $requete->closeCursor();
 
         //Redirection vers la page acceuil.php 
-        header("Location: acceuil.php");
+        header("Location: login.php");
         exit;
     }
-
     else
     {
         echo "<h4> L'adresse mail n'a pas bon format! </h4>";

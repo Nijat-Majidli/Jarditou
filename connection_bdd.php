@@ -1,19 +1,16 @@
 <?php
 
-//vérifie si on désire se diriger vers le serveur dev.amorce.org ou bien vers le serveur local
-//dans ce cas, host,login, password et BDD sont différents d'un serveur à l'autre
-
-if ($_SERVER["SERVER_NAME"] == "dev.amorce.org")
+    // Vérifie si on désire se diriger vers le serveur jarditou.nijatmajidli.eu ou bien vers le serveur local.
+    // Dans ce cas, host,login, password et BDD sont différents d'un serveur à l'autre:
+    if ($_SERVER["SERVER_NAME"] == "jarditou.nijatmajidli.eu")
     {
         // Paramètres de connexion serveur distant
         $host = "localhost";
-        $login= "mnijat";     // Votre login d'accès au serveur de BDD 
-        $password="mn20114";    // Le Password pour vous identifier auprès du serveur
-        $base = "mnijat";    // La BDD avec laquelle vous voulez travailler 
+        $login= "u988716521_nmajidli";      // Votre login d'accès au serveur de BDD 
+        $password="Mercanli1985@";          // Le Password pour vous identifier auprès du serveur
+        $base = "u988716521_jarditou";      // La BDD avec laquelle vous voulez travailler 
     }
-
-    // ici un 'OU' car il se peut que le 'localhost' ne soit pas reconnu !
-    if ($_SERVER["SERVER_NAME"] == "localhost" || $_SERVER["SERVER_NAME"] == "127.0.0.1")
+    else if ($_SERVER["SERVER_NAME"] == "localhost" || $_SERVER["SERVER_NAME"] == "127.0.0.1")  // Ici un 'OU' car il se peut que le 'localhost' ne soit pas reconnu !
     {
         // Paramètres de connexion serveur local
         $host = "localhost";
@@ -23,9 +20,9 @@ if ($_SERVER["SERVER_NAME"] == "dev.amorce.org")
     }
 
 
-    try
-    {    
-        //Instanciation de la connexion à la base de données   
+    try  
+    {      
+        // Instanciation de la connexion à la base de données
         $db = new PDO('mysql:host='.$host.';  charset=utf8;  dbname='.$base.'',  $login, $password);
 
         // Configure des attributs PDO au gestionnaire de base de données
@@ -33,9 +30,7 @@ if ($_SERVER["SERVER_NAME"] == "dev.amorce.org")
         // Ca sert à afficher des détails sur l'erreur avec un message beaucoup plus clair:
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-
-    //Si échec de la connexion (du try), on attrape l'exception avec catch
-   catch (Exception $e) 
+   catch (Exception $e)     // Si échec de la connexion (du try), on attrape l'exception avec catch
    {
         echo "La connection à la base e données a échoué ! <br>";
         echo "Merci de bien vérifier vos paramètres de connection ...<br>";

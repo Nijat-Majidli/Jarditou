@@ -13,8 +13,8 @@
     {
         if (!empty($_POST['login']) && !empty($_POST['mdp']))
         {
-            $user_login = htmlspecialchars($_POST['login']);  // La fonction "htmlspecialchars" rend inoffensives les balises HTML que le visiteur a pu rentrer et nous aide d'éviter la faille XSS  
-            $user_mdp = htmlspecialchars($_POST['mdp']);
+            $user_login = htmlspecialchars(trim($_POST['login']));  // La fonction "htmlspecialchars" rend inoffensives les balises HTML que le visiteur a pu rentrer et nous aide d'éviter la faille XSS  
+            $user_mdp = htmlspecialchars(trim($_POST['mdp']));
         }
         else
         {
@@ -31,19 +31,18 @@
     }
         
 
-
     /* Vérification: Est-ce que le mot de passe saisi par utilisateur déjà existe dans la base de données ou non ?
     D'abord on doit récupérer le mot de passe hashé de l'utilisateur qui se trouve dans la base de données.
     Pour cela, on va se connecter à la base de données:    */
     require "connection_bdd.php";
     
     // Puis on fait préparation de la requête SELECT avec la fonction prepare(): 
-    $requete = $db->prepare('SELECT user_mdp, user_blocked FROM users WHERE user_login = :user_login');
+    $requete = $db->prepare('SELECT * FROM users WHERE user_login = :user_login');
 
     // Execution de requête:
     $requete->execute(array(':user_login' => $user_login));
     
-    // $resultat est un array associatif qui contient:  1. user_mdp et sa valeur;    2. user_blocked et sa valeur
+    // $resultat est un array associatif qui contient tous les données de l'utilisateur actuel :
     $resultat = $requete->fetch();  
 
     // Pour vérifier si un mot de passe saisi est bien celui enregistré en base, on utilise la fonction password_verify() qui renvoie True ou False :
@@ -70,10 +69,6 @@
         
         // On va créer 2 variable SESSION:  $_SESSION['login']  et  $_SESSION['role']
         $_SESSION['login'] = $user_login;
-
-        $requete = $db->prepare('SELECT user_role FROM users WHERE user_login=:user_login');
-        $requete->execute(array(':user_login' => $user_login));
-        $resultat = $requete->fetch();  
         
         if($resultat['user_role']=='admin')
         {
@@ -88,23 +83,8 @@
 		header("refresh:2; url=index.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page index.php.
 		exit;
     }
-
     else 
-    {
-        $requete = $db->prepare('SELECT login_fail, user_blocked, unblock_time FROM users WHERE user_login=:user_login');
-        
-        // Association des valeurs aux marqueurs via méthode "bindValue()"
-        $requete->bindValue(':user_login', $user_login, PDO::PARAM_STR);
-
-        // Exécution de la requête
-        $requete->execute(); 
-        
-        $resultat = $requete->fetch(); 
-        /* $resultat est un tableau (array) associatif qui contient : 
-        1. login_fail et sa valeur, 
-        2. user_blocked et sa valeur,
-        3. unblock_time et sa valeur.   */
-         
+    {  
         // On augmente le nombre de login_fail à chaque fois que l'utilisateur rate s'identifier :
         $login_fail = $resultat['login_fail'] + 1;  
 
@@ -165,7 +145,7 @@
 				}
 				else
 				{
-					echo "<h4> Vous êtes bloqué pour 2 minutes! </h4>";
+					echo "<h4> Vous êtes bloqué pendant 2 minutes! </h4>";
 					header("refresh:2; url=login.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page login.php.
 					exit;
 				}

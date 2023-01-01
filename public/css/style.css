@@ -1,0 +1,55 @@
+#pageLogo {
+    opacity: 0;
+    width: 200px;
+    animation: logoAnimation 2s ease 0.5s 1 normal forwards;
+    -webkit-animation: logoAnimation 2s ease 0.5s 1 normal forwards;
+}
+
+@keyframes logoAnimation {
+    0% {
+        opacity: 0;
+        width: 200px;
+    }
+    50% {
+        opacity: 0.5;
+        width: 350px;
+    }
+    100% {
+        opacity: 1;
+        width: 250px;
+    }
+}
+
+
+.wrapper {
+    width: 400px;
+    overflow-x: hidden;
+}
+
+
+#pageSlogan {
+    opacity: 0;
+    color: #18a4bc;
+    animation: sloganAnimation 4.5s linear 2s infinite normal forwards;
+    -webkit-animation: sloganAnimation 4.5s linear 2s infinite normal forwards;
+}
+
+@keyframes sloganAnimation {
+    from {
+        opacity: 1;
+        transform: translateX(800px);
+        -webkit-transform: translateX(800px);
+        -moz-transform: translateX(800px);
+        -ms-transform: translateX(800px);
+        -o-transform: translateX(800px);
+}
+    to {
+        opacity: 1;
+        transform: translateX(-300px);
+        -webkit-transform: translateX(-300px);
+        -moz-transform: translateX(-300px);
+        -ms-transform: translateX(-300px);
+        -o-transform: translateX(-300px);
+}
+}
+

@@ -1,93 +1,74 @@
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-
-        <!-- Responsive web design -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <!-- Bootstrap CSS 4.5.3 import from CDN -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
-        <title> Inscription </title>
-    </head>
+<!-- PAGE HEAD -->
+<?php
+    if (file_exists("header.php"))
+    {
+        include("header.php");
+    }
+    else
+    {
+        echo "file 'header.php' n'existe pas";
+    }
+?>
 
 
-     <!-- PAGE HEAD -->
-     <?php
-        if (file_exists("header.php"))
-        {
-            include("header.php");
-        }
-        else
-        {
-            echo "file 'header.php' n'existe pas";
-        }
-    ?>
-
-
-    <!-- PAGE MAIN CONTENT -->
-    <!-- Vos coordonnées -->
-    <div class="container border border-dark px-4 pb-4"  style="width:62%"> 
-        <div class="col p-0">
-            <p class="pt-3"> <sup>*</sup> Ces zones sont obligatoires </p>
+<!-- PAGE MAIN CONTENT -->
+<div class="container-xl"> 
+    <div class="row justify-content-center border border-info rounded mx-1 px-5 py-4">
+        <div class="col-10">
+            <p> <sup>*</sup> Ces zones sont obligatoires </p>
             <h1 class="pb-3"> Formulaire d'inscription </h1>
             
-
-            <form  method="post"  action="script_inscription.php">
+            <form  method="post" action="script_inscription.php" autocomplete="off">
                 <div class="form-group">
-                    <label for="surname"> Nom <sup>*</sup> </label>
-                    <input type="text"  class="form-control"  id="surname"  name="nom"  placeholder="Veuillez saisir votre nom">
+                    <sup>*</sup> <label for="surname"> Nom </label>
+                    <input id="surname" type="text" class="form-control" name="nom" onkeyup="verify(this)" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="name"> Prénom <sup>*</sup> </label>
-                    <input type="text"  class="form-control"  id="name"  name="prenom"  placeholder="Veuillez saisir votre prénom">
+                    <sup>*</sup> <label for="name"> Prénom </label>
+                    <input id="name" type="text"  class="form-control" name="prenom" onkeyup="verify(this)" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="mail"> Adresse mail <sup>*</sup> </label>
-                    <input type="email"  class="form-control"  id="mail"  name="email"  placeholder="dave.loper@afpa.fr">
+                    <sup>*</sup> <label for="mail"> Email </label>
+                    <input id="mail" type="email" class="form-control" name="email" placeholder="dave.loper@afpa.fr" onblur="verify(this)" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="username"> Login <sup>*</sup> </label>
-                    <input type="text"  class="form-control"  id="username"  name="login">
+                    <sup>*</sup> <label for="username"> Login </label>
+                    <input id="username" type="text" class="form-control" name="login" placeholder="Login doit contenir au moins 8 characters" onblur="verify(this)" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="code"> Mot de passe <sup>*</sup> </label>
-                    <input type="password"  class="form-control"  id="code"  name="mdp">
+                    <sup>*</sup> <label for="code"> Mot de passe </label>
+                    <input id="code" type="password" class="form-control" name="mdp" placeholder="Mot de passe doit contenir au moins 8 characters" onblur="verify(this)" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="confirmer"> Confirmer le mot de passe <sup>*</sup> </label>
-                    <input type="password"  class="form-control"  id="confirmer"  name="mdp2">
+                    <sup>*</sup> <label for="confirmer"> Confirmer le mot de passe </label>
+                    <input id="confirmer" type="password" class="form-control" name="mdp2" onblur="verify(this)" required>
                 </div>
 
-                <!-- VALIDER button -->
-                <div class="form-group" style="margin-top:40px">
-                    <input type="submit"  value="Valider"  style="float:left; margin-left:300px; padding:10px 35px; border-radius:10px; background-color:green; color:white"> 
+                <!-- bouton VALIDER -->
+                <div class="text-center my-4">
+                    <input type="submit" value="Valider" class="py-2 px-4 bg-success text-light rounded"> 
                 </div>
             </form>
-
-
-             <!-- ANNULER button -->
-            <a href="acceuil.php"> 
-                <button style="margin-left:100px; padding:10px 30px; border-radius:10px; background-color:red; color:white"> Annuler </button> 
-            </a> 
         </div>
     </div>
+</div>
 
 
+<!-- PAGE FOOT -->
+<?php
+    if (file_exists("footer.php"))
+    {
+        include("footer.php");
+    }
+    else
+    {
+        echo "file 'footer.php' n'existe pas";
+    }
+?>
 
-    <!-- PAGE FOOT -->
-    <?php
-        include("footer.php")
-    ?>
-
-     
-     
-
-</html>
             

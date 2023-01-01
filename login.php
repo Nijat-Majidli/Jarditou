@@ -1,62 +1,51 @@
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-
-        <!-- Responsive web design -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <!-- Bootstrap CSS 4.5.3 import from CDN -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
-        <title> Login </title>
-    </head>
-
-
-     <!-- PAGE HEAD -->
-     <?php
-        if (file_exists("header.php"))
-        {
-            include("header.php");
-        }
-        else
-        {
-            echo "file 'header.php' n'existe pas";
-        }
-    ?>
-
-    
-    <!-- PAGE MAIN CONTENT -->
-    <div class="container" style="margin: 100px 0"> 
-            <form  method="post"  action="script_login.php"  style="margin-left:600px">
+<!-- PAGE HEAD -->
+    <?php
+    if (file_exists("header.php"))
+    {
+        include("header.php");
+    }
+    else
+    {
+        echo "file 'header.php' n'existe pas";
+    }
+?>
+   
+   
+<!-- PAGE MAIN CONTENT -->
+<div class="container-xl my-5 py-5"> 
+    <div class="row justify-content-center">
+        <div class="col-10 col-sm-8">
+            <form  method="post"  action="script_login.php" autocomplete="off">
                 <div class="form-group">
                     <label for="username"> Login <sup>*</sup> </label>
-                    <input type="text"  id="username"  name="login"  style="margin-left:75px">
+                    <input id="username" class="form-control" type="text" name="login" placeholder="Veuillez saisir votre idéntifiant" required>
                 </div>
                 <div class="form-group">
                     <label for="code"> Mot de passe <sup>*</sup> </label>
-                    <input type="password"  id="code"  name="mdp"  style="margin-left:20px">
+                    <input id="code" class="form-control" type="password" name="mdp" placeholder="Veuillez saisir votre mot de passe" required>
                 </div>
-                <br>
-
-                 <!--  Le bouton ENTRER -->
-                <div>
-                    <input type="submit" value="Entrer" style="float:left; padding:10px 40px; border-radius:10px; background-color:green; color:white"> 
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Se souvenir de moi</label>
                 </div>
+                <!--  Le bouton ENTRER -->
+                <div class="text-center my-5">
+                    <input type="submit" value="Entrer" class="px-4 py-2 bg-success text-light rounded">
+                </div> 
             </form>
-
-
-             <!--  Le bouton ANNULER  -->
-            <a href="acceuil.php"> 
-                <button style="margin-left:50px; padding:10px 33px; border-radius:10px; background-color:red; color:white"> Annuler </button> 
-            </a>
+        </div>
     </div>
+</div>
 
 
-
-    <!-- PAGE FOOT -->
-    <?php
-    include("footer.php")
-    ?>
-
-</html>
+<!-- PAGE FOOT -->
+<?php
+    if (file_exists("header.php"))
+    {
+        include("footer.php");
+    }
+    else
+    {
+        echo "file 'footer.php' n'existe pas";
+    }
+?>
