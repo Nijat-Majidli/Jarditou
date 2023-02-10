@@ -19,7 +19,7 @@
     
     echo "<h4> Vous êtes déconnecté ! </h4>";
     
-    header("refresh:2; url=acceuil.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page acceuil.php. 
+    header("refresh:2; url=index.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page index.php. 
     exit;
    
 

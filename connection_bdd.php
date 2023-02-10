@@ -29,6 +29,8 @@
         // Ici nous configurons l'attribut ATTR_ERRORMODE en lui donnant la valeur ERRMODE_EXCEPTION
         // Ca sert à afficher des détails sur l'erreur avec un message beaucoup plus clair:
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     }
    catch (Exception $e)     // Si échec de la connexion (du try), on attrape l'exception avec catch
    {
